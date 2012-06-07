@@ -142,7 +142,7 @@ class SQLBuilder
 		return $this;
 	}
 
-	public function insert($hash, $pk=null, $sequence_name=null)
+	public function insert($hash, $pk=NULL, $sequence_name=NULL)
 	{
 		if (!is_hash($hash))
 			throw new ActiveRecordException('Inserting requires a hash.');
@@ -191,9 +191,9 @@ class SQLBuilder
 		{
 			$v = strtolower($parts[$i]);
 
-			if (strpos($v,' asc') !== false)
+			if (strpos($v,' asc') !== FALSE)
 				$parts[$i] = preg_replace('/asc/i','DESC',$parts[$i]);
-			elseif (strpos($v,' desc') !== false)
+			elseif (strpos($v,' desc') !== FALSE)
 				$parts[$i] = preg_replace('/desc/i','ASC',$parts[$i]);
 			else
 				$parts[$i] .= ' DESC';
@@ -211,10 +211,10 @@ class SQLBuilder
 	 * @param $map A hash of "mapped_column_name" => "real_column_name"
 	 * @return A conditions array in the form array(sql_string, value1, value2,...)
 	 */
-	public static function create_conditions_from_underscored_string(Connection $connection, $name, &$values=array(), &$map=null)
+	public static function create_conditions_from_underscored_string(Connection $connection, $name, &$values=array(), &$map=NULL)
 	{
 		if (!$name)
-			return null;
+			return NULL;
 
 		$parts = preg_split('/(_and_|_or_)/i',$name,-1,PREG_SPLIT_DELIM_CAPTURE);
 		$num_values = count($values);
@@ -254,7 +254,7 @@ class SQLBuilder
 	 * @param $map A hash of "mapped_column_name" => "real_column_name"
 	 * @return array A hash of array(name => value, ...)
 	 */
-	public static function create_hash_from_underscored_string($name, &$values=array(), &$map=null)
+	public static function create_hash_from_underscored_string($name, &$values=array(), &$map=NULL)
 	{
 		$parts = preg_split('/(_and_|_or_)/i',$name);
 		$hash = array();
@@ -337,7 +337,7 @@ class SQLBuilder
 				$sql .= " ORDER BY $this->order";
 
 			if ($this->limit)
-				$sql = $this->connection->limit($sql,null,$this->limit);
+				$sql = $this->connection->limit($sql,NULL,$this->limit);
 		}
 
 		return $sql;
@@ -404,7 +404,7 @@ class SQLBuilder
 				$sql .= " ORDER BY $this->order";
 
 			if ($this->limit)
-				$sql = $this->connection->limit($sql,null,$this->limit);
+				$sql = $this->connection->limit($sql,NULL,$this->limit);
 		}
 
 		return $sql;

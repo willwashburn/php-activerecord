@@ -269,7 +269,6 @@ class JsonSerializer extends ArraySerializer
 		return json_encode(parent::to_s());
 	}
 }
-
 /**
  * XML serializer.
  *
