@@ -1853,6 +1853,39 @@
             }
             return TRUE;
         }
+
+		/**
+		 * auto save form
+		 *
+		 * //go through the post vars and save each key to the model
+		 *
+		 * //WWBN document this properly
+		 *
+		 */
+		public function auto_post($post_vars)
+		{
+			foreach ($post_vars as $key => $value) {
+				if ($this->__isset($key)) {
+				$this->$key = $value;}
+			}
+		}
+
+		public function auto_group(&$post_vars, $identifier = '@')
+		{
+
+			$grouped_vars = array();
+			foreach ($post_vars as $key => &$data) {
+				$exploded_key = explode($identifier, $key);
+				if (!isset($exploded_key[1])){
+					$exploded_key[1] = 'dni';
+				}
+				if ($exploded_key[1] != 'dni') {
+					$grouped_vars[$exploded_key[1]][$exploded_key[0]] = $data;
+				}
+
+			}
+			$post_vars = $grouped_vars;
+		}
     }
 
     ;
