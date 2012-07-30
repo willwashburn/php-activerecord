@@ -46,12 +46,17 @@ function classify($class_name, $singularize=false)
 }
 
 // http://snippets.dzone.com/posts/show/4660
-function array_flatten(array $array)
+function array_flatten($array)
 {
 	$i = 0;
 
 	while ($i < count($array))
 	{
+
+        if(is_object($array[$i])) {
+            $array[$i] = (array) $array[$i];
+        }
+
 		if (is_array($array[$i]))
 			array_splice($array,$i,1,$array[$i]);
 		else
@@ -59,7 +64,6 @@ function array_flatten(array $array)
 	}
 	return $array;
 }
-
 /**
  * Somewhat naive way to determine if an array is a hash.
  */
