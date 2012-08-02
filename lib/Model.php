@@ -1658,12 +1658,13 @@
          *
          * @param string $sql    The raw SELECT query
          * @param array  $values An array of values for any parameters that needs to be bound
+         * @param array  $includes
          *
          * @return array An array of models
          */
-        public static function find_by_sql($sql, $values = NULL)
+        public static function find_by_sql($sql, $values = NULL,$includes = array())
         {
-            return static::table()->find_by_sql($sql, $values, TRUE);
+            return static::table()->find_by_sql($sql, $values, TRUE,$includes);
         }
 
         /**
@@ -2003,5 +2004,6 @@
     }
 
     class MultiModel extends \ArrayObject {
-
+        /* multiple instances of the model */
     }
+
