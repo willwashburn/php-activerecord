@@ -2002,5 +2002,6 @@
 
     }
 
-    ;
-    ?>
+    class MultiModel extends \ArrayObject {
+
+    }

@@ -208,6 +208,9 @@
             $list                       = $attrs = array();
             $sth                        = $this->conn->query($sql, $this->process_data($values));
 
+
+            $plural_class = NULL;
+
             while (($row = $sth->fetch())) {
                 $model = new $this->class->name($row, FALSE, TRUE, FALSE);
 
@@ -222,6 +225,11 @@
 
             if ($collect_attrs_for_includes && !empty($list))
                 $this->execute_eager_load($list, $attrs, $includes);
+
+            $plural_class = $this->class->name.'s';
+            if(class_exists($plural_class)) {
+                $list = new $plural_class($list);
+            }
 
             return $list;
         }
