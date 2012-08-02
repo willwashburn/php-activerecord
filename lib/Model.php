@@ -1945,6 +1945,14 @@
         }
 
         /**
+         * Relationships
+         * @author Will
+         * @description gets the pulled relationships
+         */
+        public function relationships() {
+            return $this->__relationships;
+        }
+        /**
          * auto save form
          * @author will
          *
@@ -1967,7 +1975,6 @@
         */
         public static function tableize($data, $function_name = FALSE, $unset = array())
         {
-
 
             $complete_array = array();
 
@@ -2005,5 +2012,22 @@
 
     class MultiModel extends \ArrayObject {
         /* multiple instances of the model */
+
+        /**
+         * Prepare
+         * @author prepares data to be put in a template
+         *
+         * @description takes the object data and puts it into an array
+         *
+         */
+        public function prepare() {
+
+            $return_array = array();
+            foreach($this as $object) {
+                $return_array[] = $object->attributes();
+            }
+
+            return $return_array;
+        }
     }
 
