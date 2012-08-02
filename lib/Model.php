@@ -1612,7 +1612,7 @@
             $options['mapped_names'] = static::$alias_attribute;
             $list                    = static::table()->find($options);
 
-            return $single ? (!empty($list) ? $list[0] : NULL) : $list;
+            return $single ? (array_key_exists(0,$list) ? $list[0] : NULL) : $list;
         }
 
         /**
@@ -1662,9 +1662,9 @@
          *
          * @return array An array of models
          */
-        public static function find_by_sql($sql, $values = NULL,$includes = array())
+        public static function find_by_sql($sql, $values = NULL, $includes = array())
         {
-            return static::table()->find_by_sql($sql, $values, TRUE,$includes);
+            return static::table()->find_by_sql($sql, $values, TRUE, $includes);
         }
 
         /**
@@ -1946,19 +1946,37 @@
 
         /**
          * Relationships
-         * @author Will
+         * @author      Will
          * @description gets the pulled relationships
          */
-        public function relationships() {
+        public function relationships()
+        {
             return $this->__relationships;
         }
+
+        /**
+         * Specific relationship
+         * @author      Will
+         * @description gets the pulled relationship
+         */
+        public function relationship($relationship)
+        {
+            if (array_key_exists($relationship, $this->__relationships)) {
+                return $this->__relationships[$relationship];
+            } else {
+                return FALSE;
+            }
+        }
+
+
         /**
          * auto save form
          * @author will
          *
          * @param post variables that have keys matching to the model
          */
-        public function auto_post($post_vars)
+        public
+        function auto_post($post_vars)
         {
             foreach ($post_vars as $key => $value) {
                 if ($this->__isset($key)) {
@@ -1972,6 +1990,7 @@
         * @author Will
         *
          *  //BUG doesn't work as advertised
+         *  //WBN move to multi model
         */
         public static function tableize($data, $function_name = FALSE, $unset = array())
         {
@@ -2010,24 +2029,27 @@
 
     }
 
-    class MultiModel extends \ArrayObject {
+    class MultiModel extends \ArrayObject
+    {
         /* multiple instances of the model */
 
         /**
          * Prepare
-         * @author prepares data to be put in a template
+         * @author      prepares data to be put in a template
          *
          * @description takes the object data and puts it into an array
          *
          */
-        public function prepare() {
+        public function prepare()
+        {
 
             $return_array = array();
-            foreach($this as $object) {
+            foreach ($this as $object) {
                 $return_array[] = $object->attributes();
             }
 
             return $return_array;
         }
+
     }
 
