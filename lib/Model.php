@@ -342,6 +342,22 @@
                 $name  = "get_$name";
                 $value = $this->$name();
                 return $value;
+            } else {
+                if (defined('__MODELS_PATH')) {
+
+                    $parent_class    = get_class($this);
+                    $class_name      = strtolower($name);
+                    $namespace       = 'submodel\\' . $parent_class . '\\';
+                    $full_class_name = $namespace . $class_name;
+
+                    $path = __MODELS_PATH . $parent_class . '/' . $class_name . '.submodel.php';
+                    if (file_exists($path)) {
+                        include_once $path;
+
+                        $submodel = new $full_class_name($this);
+                        return $submodel;
+                    }
+                }
             }
 
             return $this->read_attribute($name);
@@ -1612,7 +1628,7 @@
             $options['mapped_names'] = static::$alias_attribute;
             $list                    = static::table()->find($options);
 
-            return $single ? (array_key_exists(0,$list) ? $list[0] : NULL) : $list;
+            return $single ? (array_key_exists(0, $list) ? $list[0] : NULL) : $list;
         }
 
         /**
@@ -2051,5 +2067,27 @@
             return $return_array;
         }
 
+    }
+
+    /**
+     * Submodel
+     * @author          Will
+     * @description     Submodels support for the breaking up of large models.
+     *                  Submodels go in a dir named after parent in models dir
+     *                  filename is {submodel}.submodel.php
+     */
+    class Submodel
+    {
+        public $parent;
+
+        /**
+         * Construct
+         * @author          Will
+         * @description     Takes the this reference and puts it as parent
+         */
+        public function __construct($_this)
+        {
+            $this->parent = $_this;
+        }
     }
 
