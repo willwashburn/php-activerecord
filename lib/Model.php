@@ -2089,5 +2089,22 @@
         {
             $this->parent = $_this;
         }
+
+        /**
+         * Magic Getter for submodel
+         * @param $name
+         * @return mixed
+         */
+        public function &__get($name)
+        {
+            // check for getter
+            if (method_exists($this, "get_$name")) {
+                $name  = "get_$name";
+                $value = $this->$name();
+                return $value;
+            } else {
+                return $this->$name;
+            }
+        }
     }
 
