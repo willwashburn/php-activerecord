@@ -2,51 +2,76 @@
 
     namespace ActiveRecord;
 
-    class MultiModel implements \ArrayAccess, \Iterator, \Countable {
+    class MultiModel implements \ArrayAccess, \Iterator, \Countable
+    {
 
         private $container = array();
 
-        public function __construct($array) {
-            $this->container = $array;
+        public function __construct($array)
+        {
+            if (!$array) {
+                unset($this->container);
+            } else {
+                $this->container = $array;
+            }
         }
 
-        public function offsetSet($offset,$value) {
+        public function add_object($model) {
+            if (!is_array($this->container)) {
+                $this->container = array();
+            }
+
+            $this->container[] = $model;
 
         }
 
-        public function offsetExists($offset) {
+        public function offsetSet($offset, $value)
+        {
+
+        }
+
+        public function offsetExists($offset)
+        {
             return isset($this->container[$offset]);
         }
 
-        public function offsetUnset($offset) {
+        public function offsetUnset($offset)
+        {
             unset($this->container[$offset]);
         }
 
-        public function offsetGet($offset) {
-            return isset($this->container[$offset]) ? $this->container[$offset] : null;
+        public function offsetGet($offset)
+        {
+            return isset($this->container[$offset]) ? $this->container[$offset] : NULL;
         }
 
-        public function rewind() {
+        public function rewind()
+        {
             reset($this->container);
         }
 
-        public function current() {
+        public function current()
+        {
             return current($this->container);
         }
 
-        public function key() {
+        public function key()
+        {
             return key($this->container);
         }
 
-        public function next() {
+        public function next()
+        {
             return next($this->container);
         }
 
-        public function valid() {
-            return $this->current() !== false;
+        public function valid()
+        {
+            return $this->current() !== FALSE;
         }
 
-        public function count() {
+        public function count()
+        {
             return count($this->container);
         }
 

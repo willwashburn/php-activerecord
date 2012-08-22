@@ -226,12 +226,24 @@
             if ($collect_attrs_for_includes && !empty($list)) {
                 $this->execute_eager_load($list, $attrs, $includes);
             }
-            $plural_class = $this->class->name . 's';
-           if (class_exists($plural_class)) {
-               $list = new $plural_class($list);
-           }
 
             return $list;
+        }
+
+        /**
+         * Has MultiModel
+         * @author Will
+         */
+        public function multi_model()
+        {
+            $plural_class = $this->class->name . 's';
+            if (class_exists($plural_class)) {
+                return $plural_class;
+
+            } else {
+                return FALSE;
+            }
+
         }
 
         /**

@@ -1274,12 +1274,23 @@
             $table = static::table();
 
             if (($rel = $table->get_relationship($name))) {
+
                 if ($rel->is_poly()) {
                     // if the related model is null and it is a poly then we should have an empty array
-                    if (is_null($model))
+                    if (is_null($model)) {
                         return $this->__relationships[$name] = array();
-                    else
-                        return $this->__relationships[$name][] = $model;
+
+                    } else {
+                        if ($multi_model_name = $model->table()->multi_model()) {
+                            if (!isset($this->__relationships[$name]) || !is_object($this->__relationships[$name])) {
+                                return $this->__relationships[$name] = new $multi_model_name(array($model));
+                            } else {
+                                return $this->__relationships[$name]->add_object($model);
+                            }
+                        } else {
+                            return $this->__relationships[$name][] = $model;
+                        }
+                    }
                 } else
                     return $this->__relationships[$name] = $model;
             }
@@ -1633,7 +1644,15 @@
             $options['mapped_names'] = static::$alias_attribute;
             $list                    = static::table()->find($options);
 
-            return $single ? (array_key_exists(0, $list) ? $list[0] : NULL) : $list;
+            if (!$single) {
+                if ($multi_model = static::table()->multi_model()) {
+                    return new $multi_model($list);
+                } else {
+                    return $list;
+                }
+            } else {
+                return (array_key_exists(0, $list)) ? $list[0] : NULL;
+            }
         }
 
         /**
@@ -1685,7 +1704,13 @@
          */
         public static function find_by_sql($sql, $values = NULL, $includes = array())
         {
-            return static::table()->find_by_sql($sql, $values, TRUE, $includes);
+            $array = static::table()->find_by_sql($sql, $values, TRUE, $includes);
+
+            if ($multi_model = static::table()->multi_model()) {
+                return new $multi_model($array);
+            } else {
+                return $array;
+            }
         }
 
         /**
