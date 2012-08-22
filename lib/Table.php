@@ -223,15 +223,13 @@
                 $list[] = $model;
             }
 
-            if ($collect_attrs_for_includes && !empty($list))
+            if ($collect_attrs_for_includes && !empty($list)) {
                 $this->execute_eager_load($list, $attrs, $includes);
-
-            $plural_class = $this->class->name . 's';
-            if (class_exists($plural_class)) {
-                if (!empty($list)) {
-                    $list = new $plural_class($list);
-                }
             }
+            $plural_class = $this->class->name . 's';
+           if (class_exists($plural_class)) {
+               $list = new $plural_class($list);
+           }
 
             return $list;
         }
