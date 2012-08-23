@@ -5,18 +5,27 @@
     class MultiModel implements \ArrayAccess, \Iterator, \Countable
     {
 
-        private $container = array();
+        protected $container = array(), $dont_prepare_these_ids = array();
 
+        /**
+         * Construct
+         * @author      Will
+         * @description If there is nothing in array, make it an empty object
+         * @param $array
+         */
         public function __construct($array)
         {
-            if (!$array) {
-                unset($this->container);
-            } else {
-                $this->container = $array;
-            }
+            if(is_array($array)) {    $this->container = $array; }
+
         }
 
-        public function add_object($model) {
+        /**
+         * Add Object to data array
+         * @author Will
+         * @param $model
+         */
+        public function add_object($model)
+        {
             if (!is_array($this->container)) {
                 $this->container = array();
             }
@@ -25,6 +34,68 @@
 
         }
 
+        /**
+         * Prepare
+         * @author      prepares data to be put in a template
+         *
+         * @description takes the object data and puts it into an array
+         *
+         */
+        public function prepare()
+        {
+
+            $return_array = array();
+            foreach ($this as $object) {
+                if (!in_array($object->id, $this->dont_prepare_these_ids)) {
+                    $return_array[] = $object->attributes();
+                }
+            }
+
+            return $return_array;
+        }
+
+        /**
+         * Dont show when prepared
+         * @author      Will
+         * @description Removes given id from prepare statement
+         *
+         */
+        public function hide($id)
+        {
+            $this->lazy_load_dont_prepare_list();
+            $this->dont_prepare_these_ids[$id] = $id;
+        }
+
+        /**
+         * Show when prepared
+         * @author      Will
+         * @description Removes given id from prepare statement
+         *
+         */
+        public function show($id)
+        {
+            if (isset($this->dont_prepare_these_ids)) {
+                if (array_key_exists($id, $this->dont_prepare_these_ids)) {
+                    unset($this->dont_prepare_these_ids[$id]);
+                }
+            }
+        }
+
+        /**
+         * Lazy Load
+         * @author Will
+         */
+        private function lazy_load_dont_prepare_list()
+        {
+            if (!isset($this->dont_prepare_these_ids)) {
+                $this->dont_prepare_these_ids = array();
+            }
+        }
+
+        /**
+         * Recreate ArrayObject
+         * @author Will
+         */
         public function offsetSet($offset, $value)
         {
 
@@ -73,24 +144,6 @@
         public function count()
         {
             return count($this->container);
-        }
-
-        /**
-         * Prepare
-         * @author      prepares data to be put in a template
-         *
-         * @description takes the object data and puts it into an array
-         *
-         */
-        public function prepare()
-        {
-
-            $return_array = array();
-            foreach ($this as $object) {
-                $return_array[] = $object->attributes();
-            }
-
-            return $return_array;
         }
 
     }
