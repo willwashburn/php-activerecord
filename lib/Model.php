@@ -355,7 +355,7 @@
                     $namespace       = 'submodel\\' . $parent_class . '\\';
                     $full_class_name = $namespace . $class_name;
 
-                    $path = __MODELS_PATH . $parent_class . '/' . $class_name . '.' . $parent_class . '.submodel.php';
+                    $path = __MODELS_PATH . $parent_class . '/' . $class_name . '.' . strtolower($parent_class) . '.submodel.php';
                     if (file_exists($path)) {
                         include_once $path;
 
