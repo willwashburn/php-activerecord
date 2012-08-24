@@ -340,6 +340,9 @@
          *
          * @return mixed The value of the attribute
          */
+
+        public $__submodels = array();
+
         public function &__get($name)
         {
             // check for getter
@@ -359,8 +362,18 @@
                     if (file_exists($path)) {
                         include_once $path;
 
-                        $submodel = new $full_class_name($this);
-                        return $submodel;
+                        if(array_key_exists($name,$this->__submodels)) {
+
+                            return $this->submodels[$name];
+
+                        } else {
+
+                            $submodel = new $full_class_name($this);
+                            $this->__submodels[$name] = $submodel;
+
+                            return $submodel;
+                        }
+
                     }
                 }
             }
