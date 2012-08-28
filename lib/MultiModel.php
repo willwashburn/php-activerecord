@@ -5,7 +5,7 @@
     class MultiModel implements \ArrayAccess, \Iterator, \Countable
     {
 
-        protected $container = array(), $dont_prepare_these_ids = array();
+        protected $container = array(); //, $dont_prepare_these_ids = array();
 
         /**
          * Construct
@@ -15,8 +15,41 @@
          */
         public function __construct($array)
         {
-            if(is_array($array)) {    $this->container = $array; }
+            if (is_array($array)) {
+                $this->container = $array;
+            }
 
+        }
+
+
+        /**
+         * @author          Will
+         * @description     test if the container is empty or not
+         *                  also did opposite just for clarity
+         * @return bool
+         */
+        public function is_empty()
+        {
+            if (empty($this->container)) {
+                return TRUE;
+            } else {
+                return FALSE;
+            }
+        }
+
+        /**
+         * @author          Will
+         * @description     test if the container is empty or not
+         *                  also did opposite just for clarity
+         * @return bool
+         */
+        public function is_not_empty()
+        {
+            if ($this->is_empty()) {
+                return FALSE;
+            } else {
+                return TRUE;
+            }
         }
 
         /**
