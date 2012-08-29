@@ -364,7 +364,7 @@
 
                         if(array_key_exists($name,$this->__submodels)) {
 
-                            return $this->submodels[$name];
+                            return $this->__submodels[$name];
 
                         } else {
 
