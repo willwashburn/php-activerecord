@@ -362,13 +362,13 @@
                     if (file_exists($path)) {
                         include_once $path;
 
-                        if(array_key_exists($name,$this->__submodels)) {
+                        if (array_key_exists($name, $this->__submodels)) {
 
                             return $this->__submodels[$name];
 
                         } else {
 
-                            $submodel = new $full_class_name($this);
+                            $submodel                 = new $full_class_name($this);
                             $this->__submodels[$name] = $submodel;
 
                             return $submodel;
@@ -2044,35 +2044,11 @@
             }
         }
 
-        /*
-        * convert to table array
-        * @author Will
-        *
-         *  //BUG doesn't work as advertised
-         *  //WBN move to multi model
-        */
-        public static function tableize($data, $function_name = FALSE, $unset = array())
-        {
-
-            $complete_array = array();
-
-            foreach ($data as $account):
-                $return = \commonlib\object_converter::toArray($account);
-                if ($function_name) {
-                    $account->$function_name($return, $unset);
-                }
-
-                $complete_array[] = $return;
-            endforeach;
-
-
-            return $complete_array;
-        }
-
         /**
-         * convert to panel array
-         * @author Will
+         * @author          Will
+         * @description     turn into panel (table) with all the data
          *
+         * @return \htmlstrap\table
          */
         public function panelize($function_name = FALSE, $unset = array())
         {

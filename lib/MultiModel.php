@@ -179,4 +179,29 @@
             return count($this->container);
         }
 
+        /**
+         * @author             Will
+         * @description        creates a htmlstrap table from the object
+         *
+         * @retrun  \htmlstrap\table
+         */
+        public static function tableize($data, $function_name = FALSE, $unset = array())
+        {
+
+            $complete_array = array();
+
+            foreach ($data as $account):
+                $return = \commonlib\object_converter::toArray($account);
+                if ($function_name) {
+                    $account->$function_name($return, $unset);
+                }
+
+                $complete_array[] = $return;
+            endforeach;
+
+
+            return new \htmlstrap\table($complete_array);
+        }
+
+
     }
