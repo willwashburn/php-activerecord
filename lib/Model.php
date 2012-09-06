@@ -2048,6 +2048,9 @@
          * @author          Will
          * @description     turn into panel (table) with all the data
          *
+         * @param bool  $function_name
+         * @param array $unset
+         *
          * @return \htmlstrap\table
          */
         public function panelize($function_name = FALSE, $unset = array())
@@ -2061,6 +2064,24 @@
             return $return;
         }
 
+        /**
+         * @author          Will
+         * @description     get attributes in an array using the getter functions defined
+         *
+         * @return array
+         */
+        public function attributes_using_getters()
+        {
+            $array_model = $this->to_array();
+
+            $polished_model = array();
+
+            foreach ($array_model as $key=> $value) {
+                $polished_model[$key] = $this->$key;
+            }
+
+            return $polished_model;
+        }
 
     }
 

@@ -191,8 +191,7 @@
 
             foreach ($this->container as $model) {
 
-                $array_model      = \commonlib\object_converter::toArray($model);
-                $complete_array[] = $array_model['attributes'];
+                $complete_array[] = $model->attributes_using_getters();
 
             }
 
