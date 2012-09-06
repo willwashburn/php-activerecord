@@ -183,22 +183,18 @@
          * @author             Will
          * @description        creates a htmlstrap table from the object
          *
-         * @retrun  \htmlstrap\table
+         * @retrun             \htmlstrap\table
          */
-        public static function tableize($data, $function_name = FALSE, $unset = array())
+        public function tableize()
         {
-
             $complete_array = array();
 
-            foreach ($data as $account):
-                $return = \commonlib\object_converter::toArray($account);
-                if ($function_name) {
-                    $account->$function_name($return, $unset);
-                }
+            foreach ($this->container as $model) {
 
-                $complete_array[] = $return;
-            endforeach;
+                $array_model      = \commonlib\object_converter::toArray($model);
+                $complete_array[] = $array_model['attributes'];
 
+            }
 
             return new \htmlstrap\table($complete_array);
         }
