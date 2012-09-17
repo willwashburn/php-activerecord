@@ -2034,8 +2034,7 @@
          *
          * @param post variables that have keys matching to the model
          */
-        public
-        function auto_post($post_vars)
+        public function auto_post($post_vars)
         {
             foreach ($post_vars as $key => $value) {
                 if ($this->__isset($key)) {
